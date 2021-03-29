@@ -9,8 +9,6 @@ public class Player extends GameObject {
     public Player(int x, int y, ID id) {
         super(x, y, id);
 
-        velX=random.nextInt(5)+1;
-        velY=random.nextInt(5);
     }
 
     public void tick() {
@@ -19,7 +17,8 @@ public class Player extends GameObject {
     }
 
     public void render(Graphics graphics) {
-        graphics.setColor(Color.WHITE);
+        if(id == ID.Player)graphics.setColor(Color.WHITE);
+        if(id == ID.Player2)graphics.setColor(Color.green);
         graphics.fillRect(x,y,32,32);
     }
 }

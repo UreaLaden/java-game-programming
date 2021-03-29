@@ -13,14 +13,16 @@ public class Game extends Canvas implements Runnable {
     private boolean running = false;
     private Random random;
     private Handler handler;
-
+    private KeyInput input ;
     public Game(){
-        new Window(WIDTH,HEIGHT,"Let's Build a Game!", this);
         handler = new Handler();
-        random = new Random();
-        for(int i=0;i<50;i++){
-            handler.addObject(new Player(random.nextInt(WIDTH), random.nextInt(HEIGHT), ID.Player));
-        }
+        input = new KeyInput(handler);
+        this.addKeyListener(input);
+
+        new Window(WIDTH,HEIGHT,"Let's Build a Game!", this);
+
+        handler.addObject(new Player(WIDTH /2-32, HEIGHT/2 - 32, ID.Player));
+        handler.addObject(new Player(WIDTH /2+64, HEIGHT/2 - 32, ID.Player2));
     }
 
     public synchronized void start(){
@@ -36,8 +38,10 @@ public class Game extends Canvas implements Runnable {
             e.printStackTrace();
         }
     }
+
     public void run(){
 //        Game Loop
+        this.requestFocus();
         long lastTime = System.nanoTime();
         double amountOfTicks = 60.0;
         double ns = 1000000000 / amountOfTicks;
@@ -54,12 +58,13 @@ public class Game extends Canvas implements Runnable {
             }
             if(running){
                 render();
+                input.Update();
             }
             frames++;
 
             if(System.currentTimeMillis()- timer > 1000){
                 timer += 1000;
-                System.out.println("FPS: " + frames);
+//                System.out.println("FPS: " + frames);
                 frames = 0;
             }
         }
